@@ -2,14 +2,15 @@ class UsersController < ApplicationController
     skip_before_action :authorized, only: [:create, :update]
 
     def profile
-        render json: {user: current_user}, status: :accepted
+        avatar_url = rails_blob_path(current_user.avatar)
+        render json: {user: current_user, avatar_url: avatar_url}, status: :accepted
     end
 
     def update
         user = User.find(params[:id])
         user.update(avatar: params[:avatar])
         avatar_url = rails_blob_path(user.avatar)
-        render json: {user: user, avatar_url: avatar_url}
+        render json: {user: user, avatar_url: avatar_url, jwt: token}
     end
 
     def create

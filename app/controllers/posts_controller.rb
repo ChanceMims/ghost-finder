@@ -14,13 +14,23 @@ class PostsController < ApplicationController
 
     def show
         post = Post.find(params[:id])
-        render json: post, include: :comments
+        image = rails_blob_path(post.image)
+        render json: {post: post, image: image, comments: post.comments}
     end
 
     def index
         posts = Post.all
         render json: posts
     end
+
+     def update
+        post = Post.find(params[:id])
+        post.update(image: params[:image])
+        
+        image_url = rails_blob_path(post.image)
+        render json: {post: post, image_url: image_url}
+    end
+
 
     private
 

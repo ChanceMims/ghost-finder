@@ -3,8 +3,11 @@ class CommentsController < ApplicationController
 
     def create
         comment = Comment.create(comment_params)
+        # user_hash = {}
+        avatar_url = rails_blob_path(comment.user.avatar)
+        # user_hash.merge(avatar_url: avatar_url, username: comment.user.username)
         
-        render json: {comment: comment, user_info: {avatar_url: rails_blob_path(comment.user.avatar), username: comment.user.username}}
+        render json: {comment: comment, user: {avatar_url: avatar_url, username: comment.user.username}}
     end
 
 
